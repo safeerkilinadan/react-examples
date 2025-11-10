@@ -1,0 +1,82 @@
+/* --- Layout --- */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* --- Header --- */
+.title {
+  font-size: 2.5rem;
+  color: #34495e;
+  margin-bottom: 40px;
+}
+
+/* --- Loading & Error --- */
+.loading {
+  font-size: 1.2rem;
+  color: #2980b9;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.error {
+  background: #ffe5e5;
+  color: #c0392b;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 20px;
+  border: 1px solid #e74c3c;
+}
+
+/* --- Posts --- */
+.posts {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: left;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.post-title {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.post-body {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* --- Footer --- */
+.footer {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #777;
+}
