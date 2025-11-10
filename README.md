@@ -1,16 +1,88 @@
-# React + Vite
+# React useFetch Example
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple example demonstrating how to create and use a **custom React hook** for fetching data from an API.
 
-Currently, two official plugins are available:
+## 📘 About `useFetch`
+The `useFetch` hook abstracts the logic of fetching data, managing loading states, and handling errors. It can be reused across multiple components with just a URL.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🔧 Features
+- Fetch data from any API endpoint
+- Built-in loading and error handling
+- Clean, reusable logic for multiple components
 
-## React Compiler
+## 🧩 How It Works
+1. `useFetch(url)` starts fetching data when the component mounts or when the `url` changes.
+2. It returns three values:
+   - `data`: The response from the API
+   - `loading`: A boolean that indicates if the data is still being fetched
+   - `error`: Any error that occurred during the fetch
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Example Usage
+```jsx
+import React from "react";
+import useFetch from "./hooks/useFetch";
 
-## Expanding the ESLint configuration
+function App() {
+  const { data, loading, error } = useFetch("https://jsonplaceholder.typicode.com/posts");
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div>
+      <h1>Posts</h1>
+      <ul>
+        {data.slice(0, 5).map(post => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
+
+## ⚙️ Hook Implementation
+```js
+import { useState, useEffect } from "react";
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!url) return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Network error");
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+export default useFetch;
+```
+
+## 🧠 Why Use Custom Hooks?
+- Keeps components clean and focused
+- Promotes reusability
+- Reduces duplicated logic
+
+---
+**Branch:** `react-custom-hook`  
+**Example:** Fetching data with a reusable React hook
